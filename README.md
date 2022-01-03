@@ -1,27 +1,47 @@
-# MyWeb
+1)ng new wc
+2)ng add @angular/elements
+3)npm install --save @webcomponents/webcomponentsjs
+4)npm i @webcomponents/custom-elements 5) import ‘@webcomponents/custom-elements/src/native-shim’;
+import ‘@webcomponents/custom-elements/custom-elements.min’;
+6)ng g c mywc –v Native ShadowDom
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.11.
+7)entryComponents: [CustomElementDemoComponent]
 
-## Development server
+8)constructor(private injector: Injector) {
+}
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+ngDoBootstrap() {
+const customElement = createCustomElement(CustomElementDemoComponent, { injector: this.injector });
+customElements.define('custom-element', customElement);
+}
 
-## Code scaffolding
+9)<custom-element></custom-element>
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+10)npm i –save-dev concat fs-extra
 
-## Build
+11)ng add ngx-build-plus
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+12)ng g ngx-build-plus:wc-polyfill
 
-## Running unit tests
+13)ng g ngx-build-plus:externals
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+14)ng build –extra-webpack-config webpack.external.js –prod –single-bundle true –project <project name>
 
-## Running end-to-end tests
+15)Ng build --prod
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+16)create test.js file in root angular project
 
-## Further help
+17)const fs = require("fs-extra");
+const concat = require("concat");
+(async function build() {
+const files = [
+"./dist/my-web/runtime.js",
+"./dist/my-web/polyfills.js",
+"./dist/my-web/scripts.js",
+"./dist/my-web/main.js",
+];
+await fs.ensureDir("elements");
+await concat(files, "elements/custom-element.js");
+})();
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+18)node test.js
